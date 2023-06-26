@@ -2,11 +2,15 @@ package com.irembo.portal.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
@@ -18,6 +22,7 @@ import jakarta.persistence.ManyToOne;
 public class PaymentAccount {
     @Id
     @Column(name = "id")
+    @GeneratedValue
     private UUID id;
 
     @Column(name = "account_name", nullable = false)
@@ -30,6 +35,7 @@ public class PaymentAccount {
     private UUID appAccountId;
 
     @Column(name = "created_at")
+    @CreatedDate
     private LocalDateTime createdAt;
 
     @Column(name = "currency", nullable = false)
@@ -60,6 +66,7 @@ public class PaymentAccount {
     private String type;
 
     @Column(name = "updated_at")
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     @Column(name = "wallet_balance", precision = 19, scale = 2)
