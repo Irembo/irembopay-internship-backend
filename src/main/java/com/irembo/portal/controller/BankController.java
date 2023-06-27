@@ -16,7 +16,7 @@ import com.irembo.portal.repository.BankRepository;
 import com.irembo.portal.service.BankService;
 
 @RestController
-@RequestMapping("/api/banks")
+@RequestMapping("/api/bank")
 public class BankController {
     private final BankRepository bankRepository;
 

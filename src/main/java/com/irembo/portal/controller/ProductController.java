@@ -1,6 +1,5 @@
 package com.irembo.portal.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,18 +10,16 @@ import com.irembo.portal.model.Product;
 import com.irembo.portal.repository.ProductRepository;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/product")
 public class ProductController {
     private final ProductRepository productRepository;
 
-    @Autowired
     public ProductController(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    @GetMapping("/products")
+    @GetMapping
     public Page<Product> getAllProducts(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
 }
-

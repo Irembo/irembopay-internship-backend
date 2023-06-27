@@ -13,7 +13,7 @@ import com.irembo.portal.repository.PaymentAccountRepository;
 import com.irembo.portal.service.PaymentAccountService;
 
 @RestController
-@RequestMapping("/api/payment-accounts")
+@RequestMapping("/api/payment-account")
 public class PaymentAccountController {
     private final PaymentAccountRepository paymentAccountRepository;
 
