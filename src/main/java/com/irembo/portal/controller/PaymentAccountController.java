@@ -40,6 +40,10 @@ public class PaymentAccountController {
     @PostMapping
     public ResponseEntity<PaymentAccount> createBank(@RequestBody PaymentAccount paymentAccount) {
         PaymentAccount createdPaymentAccount = paymentAccountService.createPaymentAccount(paymentAccount);
+        // TODO: fix Cannot construct instance of `com.irembo.portal.model.Bank`
+        // (although at least one Creator exists): no String-argument
+        // constructor/factory method to deserialize from String value
+        // ('35086160-fcb1-4783-a3d0-2cbffad4dd80')
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPaymentAccount);
     }
 }
