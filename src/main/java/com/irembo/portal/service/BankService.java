@@ -1,6 +1,5 @@
 package com.irembo.portal.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.irembo.portal.model.Bank;
@@ -14,7 +13,6 @@ import java.util.UUID;
 public class BankService {
     private final BankRepository bankRepository;
 
-    @Autowired
     public BankService(BankRepository bankRepository) {
         this.bankRepository = bankRepository;
     }

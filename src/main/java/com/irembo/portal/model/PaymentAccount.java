@@ -25,10 +25,10 @@ public class PaymentAccount {
     @GeneratedValue
     private UUID id;
 
-    @Column(name = "account_name", nullable = false)
+    @Column(name = "account_name")
     private String accountName;
 
-    @Column(name = "account_number", nullable = false)
+    @Column(name = "account_number")
     private String accountNumber;
 
     @Column(name = "app_account_id")
@@ -59,10 +59,10 @@ public class PaymentAccount {
     @Column(name = "published")
     private boolean published;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private String status;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type")
     private String type;
 
     @Column(name = "updated_at")
