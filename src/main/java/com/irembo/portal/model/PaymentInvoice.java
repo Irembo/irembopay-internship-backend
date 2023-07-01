@@ -49,12 +49,6 @@ public class PaymentInvoice {
     @Column(name = "language")
     private String language;
 
-    @Column(name = "merchant_notification_count")
-    private Integer merchantNotificationCount;
-
-    @Column(name = "merchant_notified")
-    private boolean merchantNotified;
-
     @Column(name = "payment_link_url")
     private String paymentLinkUrl;
 
@@ -72,9 +66,6 @@ public class PaymentInvoice {
 
     @Column(name = "published")
     private boolean published;
-
-    @Column(name = "rra_notified")
-    private boolean rraNotified;
 
     @Column(name = "settled_at")
     private LocalDateTime settledAt;
@@ -146,15 +137,12 @@ public class PaymentInvoice {
         this.expiryAt = expiryAt;
         this.invoiceNumber = invoiceNumber;
         this.language = language;
-        this.merchantNotificationCount = merchantNotificationCount;
-        this.merchantNotified = merchantNotified;
         this.paymentLinkUrl = paymentLinkUrl;
         this.paymentMadeAt = paymentMadeAt;
         this.paymentRecordedAt = paymentRecordedAt;
         this.paymentStatus = paymentStatus;
         this.payoutAmount = payoutAmount;
         this.published = published;
-        this.rraNotified = rraNotified;
         this.settledAt = settledAt;
         this.status = status;
         this.transactionId = transactionId;
@@ -252,22 +240,6 @@ public class PaymentInvoice {
         this.language = language;
     }
 
-    public Integer getMerchantNotificationCount() {
-        return merchantNotificationCount;
-    }
-
-    public void setMerchantNotificationCount(Integer merchantNotificationCount) {
-        this.merchantNotificationCount = merchantNotificationCount;
-    }
-
-    public boolean isMerchantNotified() {
-        return merchantNotified;
-    }
-
-    public void setMerchantNotified(boolean merchantNotified) {
-        this.merchantNotified = merchantNotified;
-    }
-
     public String getPaymentLinkUrl() {
         return paymentLinkUrl;
     }
@@ -314,14 +286,6 @@ public class PaymentInvoice {
 
     public void setPublished(boolean published) {
         this.published = published;
-    }
-
-    public boolean isRraNotified() {
-        return rraNotified;
-    }
-
-    public void setRraNotified(boolean rraNotified) {
-        this.rraNotified = rraNotified;
     }
 
     public LocalDateTime getSettledAt() {
