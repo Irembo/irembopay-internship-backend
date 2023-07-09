@@ -2,6 +2,7 @@ package com.irembo.portal.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.irembo.portal.dto.PaymentInvoiceProjection;
 import com.irembo.portal.model.PaymentInvoice;
@@ -21,4 +22,8 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
 
     long countByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfter(UUID accountId, String paid,
             LocalDateTime sevenDaysAgo);
+
+
+    @Query("SELECT i FROM PaymentInvoice i WHERE i.status = 'PAID' AND i.paymentMadeAt >= :lastNdays")
+    List<PaymentInvoice> findPaidInvoicesWithinLastNDays(LocalDateTime lastNdays);
 }

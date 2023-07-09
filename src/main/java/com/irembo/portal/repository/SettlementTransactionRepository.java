@@ -1,5 +1,6 @@
 package com.irembo.portal.repository;
 
+import org.hibernate.mapping.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

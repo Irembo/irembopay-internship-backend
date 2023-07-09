@@ -1,9 +1,7 @@
 package com.irembo.portal.service;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import com.irembo.portal.dto.PaymentAccountProjection;
 import com.irembo.portal.model.PaymentAccount;
 import com.irembo.portal.model.PaymentInvoice;
 import com.irembo.portal.repository.PaymentAccountRepository;
@@ -47,7 +45,7 @@ public class AccountStatisticsService {
     public BigDecimal getProjectedBalanceAfter7Days(UUID accountId) {
         BigDecimal currentBalance = getAccountBalance(accountId);
 
-        LocalDateTime sevenDaysFromNow = LocalDateTime.now().plusDays(7);
+        LocalDateTime sevenDaysFromNow = LocalDateTime.now().plusDays(365 + 7);
         List<PaymentInvoice> pendingInvoices = paymentInvoiceRepository
                 .findByAppAccountIdAndPaymentStatusAndPaymentMadeAtBefore(
                         accountId,
@@ -62,7 +60,7 @@ public class AccountStatisticsService {
     }
 
     public long getTotalPaidInvoicesLast7Days(UUID accountId) {
-        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(365 + 7);
 
         return paymentInvoiceRepository.countByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfter(
                 accountId,
@@ -71,7 +69,7 @@ public class AccountStatisticsService {
     }
 
     public BigDecimal getTotalValueOfTransactionsLast7Days(UUID accountId) {
-        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(365 + 7);
 
         return settlementTransactionRepository.sumTransactionAmountByAccountIdAndSettlementDateAfter(
                 accountId,
@@ -79,7 +77,7 @@ public class AccountStatisticsService {
     }
 
     public BigDecimal getTotalValueOfTransactionsLast30Days(UUID accountId) {
-        LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
+        LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(365 + 30);
 
         return settlementTransactionRepository.sumTransactionAmountByAccountIdAndSettlementDateAfter(
                 accountId,
@@ -87,7 +85,7 @@ public class AccountStatisticsService {
     }
 
     public BigDecimal getAverageDailyTransactionValue(UUID accountId) {
-        LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
+        LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(365 + 30);
         LocalDateTime now = LocalDateTime.now();
         long daysBetween = ChronoUnit.DAYS.between(thirtyDaysAgo, now);
         BigDecimal totalTransactionValue = getTotalValueOfTransactionsLast30Days(accountId);
