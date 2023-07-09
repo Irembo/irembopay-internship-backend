@@ -2,6 +2,9 @@ package com.irembo.portal.controller;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+import com.irembo.portal.dto.BalanceProjection;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,14 +21,13 @@ public class AccountStatisticsController {
     @Autowired
     private AccountStatisticsService accountStatisticsService;
 
-
     @GetMapping("/balance/{accountId}")
-    public BigDecimal getAccountBalance(@PathVariable UUID accountId) {
+    public List<BalanceProjection> getAccountBalance(@PathVariable UUID accountId) {
         return accountStatisticsService.getAccountBalance(accountId);
     }
 
     @GetMapping("/projected-balance/{accountId}")
-    public BigDecimal getProjectedBalanceAfter7Days(@PathVariable UUID accountId) {
+    public List<Map<String, Object>> getProjectedBalanceAfter7Days(@PathVariable UUID accountId) {
         return accountStatisticsService.getProjectedBalanceAfter7Days(accountId);
     }
 

@@ -13,4 +13,3 @@ public interface SettlementTransactionProjection {
     String getSettlementStatus();
     String getStatus();
 }
- 

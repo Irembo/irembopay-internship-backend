@@ -2,6 +2,7 @@ package com.irembo.portal.service;
 
 import org.springframework.stereotype.Service;
 
+import com.irembo.portal.dto.BalanceProjection;
 import com.irembo.portal.model.PaymentAccount;
 import com.irembo.portal.model.PaymentInvoice;
 import com.irembo.portal.repository.PaymentAccountRepository;
@@ -12,9 +13,16 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,53 +38,64 @@ public class AccountStatisticsService {
     @Autowired
     private SettlementTransactionRepository settlementTransactionRepository;
 
-    public BigDecimal getAccountBalance(UUID accountId) {
-        List<PaymentAccount> paymentAccount = paymentAccountRepository.findByAppIdCustomQuery(accountId);
+    public List<BalanceProjection> getAccountBalance(UUID accountId) {
 
-        if (paymentAccount.isEmpty()) {
-            throw new NoSuchElementException("Account not found");
-        }
-
-        PaymentAccount account = paymentAccount.get(5);
-
-        // logic for getting balance
-
-        // to get the value of settled invoices for a merchant, we check settlement
-        // transactions
-        // we find all settlement transactions where appAccountId is the merchant's id
-        // AND destinationAccountId is same as (get paymentAccount using
-        // accountId).getAccountNumber
-        // we sum the transaction amounts of all the settlement transactions we found
-        System.out.println(account);
-        System.out.println(accountId);
-        System.out.println(account.getId());
-
-        // TODO: fix returning null, the account we getting above does not have any settled invoices. How do know which account to check?
-
-        BigDecimal settledInvoices = settlementTransactionRepository
+        List<BalanceProjection> settledInvoices = settlementTransactionRepository
                 .sumTransactionAmountByAccountIdAndDestinationAccountId(
-                        accountId,
-                        account.getId());
+                        accountId);
 
-        return settledInvoices == null ? BigDecimal.ZERO : settledInvoices;
+        return settledInvoices;
     }
 
-    public BigDecimal getProjectedBalanceAfter7Days(UUID accountId) {
-        BigDecimal currentBalance = getAccountBalance(accountId);
+    public List<Map<String, Object>> getProjectedBalanceAfter7Days(UUID accountId) {
+        List<BalanceProjection> currentBalance = getAccountBalance(accountId);
 
-        LocalDateTime sevenDaysFromNow = LocalDateTime.now().plusDays(365 + 7);
+        // TODO: get last payout date
+        LocalDateTime lastPayoutDate = LocalDateTime.now().minusDays(356);
+        LocalDateTime sevenDaysFromNow = LocalDateTime.now().plusDays(7);
 
-        // we check PAID invoices for last 7 days for the merchant
-        // then we sum the amounts of all the invoices we found
-        // then we add the sum to the current balance
-
-        BigDecimal paidInvoices = paymentInvoiceRepository
+        List<BalanceProjection> paidInvoices = paymentInvoiceRepository
                 .sumInvoiceAmountByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfter(
                         accountId,
-                        PaymentStatus.PAID,
+                        lastPayoutDate,
                         sevenDaysFromNow);
 
-        return currentBalance.add(paidInvoices);
+        List<Map<String, Object>> balanceArray = new ArrayList<>();
+
+        for (BalanceProjection balance : currentBalance) {
+            Map<String, Object> balanceMap = new HashMap<>();
+            balanceMap.put("currency", balance.getCurrency());
+            balanceMap.put("totalAmount", balance.getTotalAmount());
+            balanceArray.add(balanceMap);
+        }
+
+        // print out balances for each currency
+        for (BalanceProjection balance : paidInvoices) {
+            // we check if currency already exists in balanceArray
+            // if it does, we add the totalAmount to the existing balance
+            // if it doesn't, we add the currency and totalAmount to the balanceArray
+
+            boolean currencyExists = false;
+
+            for (Map<String, Object> balanceMap : balanceArray) {
+                if (balanceMap.get("currency").equals(balance.getCurrency())) {
+                    currencyExists = true;
+                    BigDecimal currentTotalAmount = (BigDecimal) balanceMap.get("totalAmount");
+                    BigDecimal newTotalAmount = currentTotalAmount.add(balance.getTotalAmount());
+                    balanceMap.put("totalAmount", newTotalAmount);
+                }
+            }
+
+            if (!currencyExists) {
+                Map<String, Object> balanceMap = new HashMap<>();
+                balanceMap.put("currency", balance.getCurrency());
+                balanceMap.put("totalAmount", balance.getTotalAmount());
+                balanceArray.add(balanceMap);
+            }
+        }
+
+        return balanceArray;
+
     }
 
     public long getTotalPaidInvoicesLast7Days(UUID accountId) {

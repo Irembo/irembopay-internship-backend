@@ -1,12 +1,12 @@
 package com.irembo.portal.repository;
 
-import org.hibernate.mapping.List;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.irembo.portal.dto.BalanceProjection;
 import com.irembo.portal.dto.SettlementTransactionProjection;
-import com.irembo.portal.model.PaymentAccount;
 import com.irembo.portal.model.SettlementTransaction;
 
 import java.math.BigDecimal;
@@ -23,7 +23,11 @@ public interface SettlementTransactionRepository extends JpaRepository<Settlemen
     @Query("SELECT SUM(st.amount) FROM SettlementTransaction st WHERE st.appAccountId = ?1 AND st.settlementDate > ?2")
     BigDecimal sumTransactionAmountByAccountIdAndSettlementDateAfter(UUID accountId, LocalDateTime sevenDaysAgo);
 
-    @Query(value = "SELECT SUM(st.amount) FROM settlement_transaction st WHERE st.app_account_id = ?1 AND st.destination_account_id = ?2",nativeQuery = true)
-    BigDecimal sumTransactionAmountByAccountIdAndDestinationAccountId(UUID accountId, UUID destinationAccountId);
+    @Query(value = "SELECT currency, SUM(amount) AS totalAmount\n" + //
+            "FROM settlement_transaction st\n" + //
+            "WHERE st.app_account_id = ?1\n" + //
+            "  AND st.settlement_status = 'DONE'\n" + //
+            "GROUP BY currency;",nativeQuery = true)
+    List<BalanceProjection> sumTransactionAmountByAccountIdAndDestinationAccountId(UUID accountId);
 
 }
