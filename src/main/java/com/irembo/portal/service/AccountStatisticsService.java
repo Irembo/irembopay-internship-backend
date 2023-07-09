@@ -37,7 +37,7 @@ public class AccountStatisticsService {
             throw new NoSuchElementException("Account not found");
         }
 
-        PaymentAccount account = paymentAccount.get(0);
+        PaymentAccount account = paymentAccount.get(5);
 
         // logic for getting balance
 
@@ -47,14 +47,18 @@ public class AccountStatisticsService {
         // AND destinationAccountId is same as (get paymentAccount using
         // accountId).getAccountNumber
         // we sum the transaction amounts of all the settlement transactions we found
-        System.out.println(account.getAccountNumber());
+        System.out.println(account);
         System.out.println(accountId);
+        System.out.println(account.getId());
+
+        // TODO: fix returning null, the account we getting above does not have any settled invoices. How do know which account to check?
+
         BigDecimal settledInvoices = settlementTransactionRepository
                 .sumTransactionAmountByAccountIdAndDestinationAccountId(
                         accountId,
-                        account.getAccountNumber());
+                        account.getId());
 
-        return settledInvoices;
+        return settledInvoices == null ? BigDecimal.ZERO : settledInvoices;
     }
 
     public BigDecimal getProjectedBalanceAfter7Days(UUID accountId) {

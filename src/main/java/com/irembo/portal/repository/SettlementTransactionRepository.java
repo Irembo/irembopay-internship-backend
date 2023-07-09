@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.irembo.portal.dto.SettlementTransactionProjection;
+import com.irembo.portal.model.PaymentAccount;
 import com.irembo.portal.model.SettlementTransaction;
 
 import java.math.BigDecimal;
@@ -22,7 +23,7 @@ public interface SettlementTransactionRepository extends JpaRepository<Settlemen
     @Query("SELECT SUM(st.amount) FROM SettlementTransaction st WHERE st.appAccountId = ?1 AND st.settlementDate > ?2")
     BigDecimal sumTransactionAmountByAccountIdAndSettlementDateAfter(UUID accountId, LocalDateTime sevenDaysAgo);
 
-    @Query("SELECT SUM(st.amount) FROM SettlementTransaction st WHERE st.appAccountId = ?1 AND st.destinationAccountId = ?2")
-    BigDecimal sumTransactionAmountByAccountIdAndDestinationAccountId(UUID accountId, String accountNumber);
+    @Query(value = "SELECT SUM(st.amount) FROM settlement_transaction st WHERE st.app_account_id = ?1 AND st.destination_account_id = ?2",nativeQuery = true)
+    BigDecimal sumTransactionAmountByAccountIdAndDestinationAccountId(UUID accountId, UUID destinationAccountId);
 
 }
