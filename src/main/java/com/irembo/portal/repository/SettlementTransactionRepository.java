@@ -22,4 +22,7 @@ public interface SettlementTransactionRepository extends JpaRepository<Settlemen
     @Query("SELECT SUM(st.amount) FROM SettlementTransaction st WHERE st.appAccountId = ?1 AND st.settlementDate > ?2")
     BigDecimal sumTransactionAmountByAccountIdAndSettlementDateAfter(UUID accountId, LocalDateTime sevenDaysAgo);
 
+    @Query("SELECT SUM(st.amount) FROM SettlementTransaction st WHERE st.appAccountId = ?1 AND st.destinationAccountId = ?2")
+    BigDecimal sumTransactionAmountByAccountIdAndDestinationAccountId(UUID accountId, String accountNumber);
+
 }

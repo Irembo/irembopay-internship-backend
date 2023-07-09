@@ -39,24 +39,40 @@ public class AccountStatisticsService {
 
         PaymentAccount account = paymentAccount.get(0);
 
-        return account.getWalletBalance();
+        // logic for getting balance
+
+        // to get the value of settled invoices for a merchant, we check settlement
+        // transactions
+        // we find all settlement transactions where appAccountId is the merchant's id
+        // AND destinationAccountId is same as (get paymentAccount using
+        // accountId).getAccountNumber
+        // we sum the transaction amounts of all the settlement transactions we found
+        System.out.println(account.getAccountNumber());
+        System.out.println(accountId);
+        BigDecimal settledInvoices = settlementTransactionRepository
+                .sumTransactionAmountByAccountIdAndDestinationAccountId(
+                        accountId,
+                        account.getAccountNumber());
+
+        return settledInvoices;
     }
 
     public BigDecimal getProjectedBalanceAfter7Days(UUID accountId) {
         BigDecimal currentBalance = getAccountBalance(accountId);
 
         LocalDateTime sevenDaysFromNow = LocalDateTime.now().plusDays(365 + 7);
-        List<PaymentInvoice> pendingInvoices = paymentInvoiceRepository
-                .findByAppAccountIdAndPaymentStatusAndPaymentMadeAtBefore(
+
+        // we check PAID invoices for last 7 days for the merchant
+        // then we sum the amounts of all the invoices we found
+        // then we add the sum to the current balance
+
+        BigDecimal paidInvoices = paymentInvoiceRepository
+                .sumInvoiceAmountByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfter(
                         accountId,
-                        PaymentStatus.NEW,
+                        PaymentStatus.PAID,
                         sevenDaysFromNow);
 
-        BigDecimal totalPendingInvoiceAmount = pendingInvoices.stream()
-                .map(PaymentInvoice::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        return currentBalance.subtract(totalPendingInvoiceAmount);
+        return currentBalance.add(paidInvoices);
     }
 
     public long getTotalPaidInvoicesLast7Days(UUID accountId) {

@@ -8,6 +8,7 @@ import com.irembo.portal.dto.PaymentInvoiceProjection;
 import com.irembo.portal.model.PaymentInvoice;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -26,4 +27,8 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
 
     @Query("SELECT i FROM PaymentInvoice i WHERE i.status = 'PAID' AND i.paymentMadeAt >= :lastNdays")
     List<PaymentInvoice> findPaidInvoicesWithinLastNDays(LocalDateTime lastNdays);
+
+    @Query("SELECT SUM(i.amount) FROM PaymentInvoice i WHERE i.appAccountId = ?1 AND i.status = 'PAID' AND i.paymentMadeAt >= ?2")
+    BigDecimal sumInvoiceAmountByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfter(UUID accountId, String paid,
+            LocalDateTime sevenDaysFromNow);
 }
