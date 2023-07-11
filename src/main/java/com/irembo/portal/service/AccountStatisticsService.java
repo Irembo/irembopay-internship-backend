@@ -3,9 +3,6 @@ package com.irembo.portal.service;
 import org.springframework.stereotype.Service;
 
 import com.irembo.portal.dto.BalanceProjection;
-import com.irembo.portal.model.PaymentAccount;
-import com.irembo.portal.model.PaymentInvoice;
-import com.irembo.portal.repository.PaymentAccountRepository;
 import com.irembo.portal.repository.PaymentInvoiceRepository;
 import com.irembo.portal.repository.SettlementTransactionRepository;
 
@@ -14,23 +11,15 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class AccountStatisticsService {
-
-    @Autowired
-    private PaymentAccountRepository paymentAccountRepository;
 
     @Autowired
     private PaymentInvoiceRepository paymentInvoiceRepository;
@@ -51,6 +40,9 @@ public class AccountStatisticsService {
         List<BalanceProjection> currentBalance = getAccountBalance(accountId);
 
         // TODO: get last payout date
+
+        // check settlement transcaction logs for latest payout date
+
         LocalDateTime lastPayoutDate = LocalDateTime.now().minusDays(356);
         LocalDateTime sevenDaysFromNow = LocalDateTime.now().plusDays(7);
 

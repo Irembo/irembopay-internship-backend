@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 
 @Repository
 public interface SettlementTransactionRepository extends JpaRepository<SettlementTransaction, UUID> {
-    Page<SettlementTransactionProjection> findAllProjectedBy(Pageable pageable);
+    Page<SettlementTransactionProjection> findAllProjectedBy(UUID appAccountId, Pageable pageable);
 
     // create sumTransactionAmountByAccountIdAndSettlementDateAfter query method
     @Query("SELECT SUM(st.amount) FROM SettlementTransaction st WHERE st.appAccountId = ?1 AND st.settlementDate > ?2")

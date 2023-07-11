@@ -20,8 +20,8 @@ public class SettlementTransactionService {
     private SettlementTransactionRepository settlementTransactionRepository;
 
     // get all payment invoices
-    public Page<SettlementTransactionProjection> getAllSettlementTrasncation(Pageable pageable) {
-        return settlementTransactionRepository.findAllProjectedBy(pageable);
+    public Page<SettlementTransactionProjection> getAllSettlementTrasncation(Pageable pageable, UUID appAccountId) {
+        return settlementTransactionRepository.findAllProjectedBy(appAccountId, pageable);
     }
 
     // get one payment invoice by id

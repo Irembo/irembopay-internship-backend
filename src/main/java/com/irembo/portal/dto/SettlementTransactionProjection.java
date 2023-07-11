@@ -12,4 +12,6 @@ public interface SettlementTransactionProjection {
     LocalDateTime getSettlementDate();
     String getSettlementStatus();
     String getStatus();
+
+    UUID getAppAccountId();
 }

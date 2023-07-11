@@ -16,7 +16,7 @@ import org.springframework.data.domain.Pageable;
 
 @Repository
 public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, UUID> {
-        Page<PaymentInvoiceProjection> findAllProjectedBy(Pageable pageable);
+        Page<PaymentInvoiceProjection> findAllProjectedBy(UUID appAccountId, Pageable pageable);
 
         List<PaymentInvoice> findByAppAccountIdAndPaymentStatusAndPaymentMadeAtBefore(
                         UUID merchantAccountId, String paymentStatus, LocalDateTime paymentMadeAt);

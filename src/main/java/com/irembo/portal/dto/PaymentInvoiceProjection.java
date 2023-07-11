@@ -13,4 +13,6 @@ public interface PaymentInvoiceProjection {
     UUID getId();
     String getPaymentStatus();
 
+    UUID getAppAccountId();
+
 }
