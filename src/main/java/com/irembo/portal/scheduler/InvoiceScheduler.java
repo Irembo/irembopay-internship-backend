@@ -11,9 +11,6 @@ import com.irembo.portal.model.SettlementTransaction;
 import com.irembo.portal.repository.PaymentInvoiceRepository;
 import com.irembo.portal.repository.SettlementTransactionRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;

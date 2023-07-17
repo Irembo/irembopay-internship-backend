@@ -1,6 +1,7 @@
 package com.irembo.portal.repository;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,11 +13,10 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.data.domain.Pageable;
 
 @Repository
 public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, UUID> {
-        Page<PaymentInvoiceProjection> findAllProjectedBy(Pageable pageable);
+        // List<PaymentInvoiceProjection> findAllProjectedBy(UUID accountId);
 
         List<PaymentInvoice> findByAppAccountIdAndPaymentStatusAndPaymentMadeAtBefore(
                         UUID merchantAccountId, String paymentStatus, LocalDateTime paymentMadeAt);
@@ -36,4 +36,6 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
                         "GROUP BY currency;", nativeQuery = true)
         List<BalanceProjection> sumInvoiceAmountByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfter(UUID accountId,
                         LocalDateTime lastPayoutDone, LocalDateTime sevenDaysFromNow);
+
+        Page<PaymentInvoiceProjection> findByAppAccountId(UUID accountNumber, Pageable pageable);
 }

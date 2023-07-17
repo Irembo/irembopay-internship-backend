@@ -20,8 +20,8 @@ public class PaymentInvoiceService {
     private PaymentInvoiceRepository paymentInvoiceRepository;
 
     // get all payment invoices
-    public Page<PaymentInvoiceProjection> getAllPaymentInvoices(Pageable pageable) {
-        return paymentInvoiceRepository.findAllProjectedBy(pageable);
+    public Page<PaymentInvoiceProjection> getAllPaymentInvoices(UUID accountNumber, Pageable pageable) {
+        return paymentInvoiceRepository.findByAppAccountId(accountNumber, pageable);
     }
 
     // get one payment invoice by id

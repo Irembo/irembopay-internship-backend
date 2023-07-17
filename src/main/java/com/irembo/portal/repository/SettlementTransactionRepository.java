@@ -30,4 +30,6 @@ public interface SettlementTransactionRepository extends JpaRepository<Settlemen
             "GROUP BY currency;",nativeQuery = true)
     List<BalanceProjection> sumTransactionAmountByAccountIdAndDestinationAccountId(UUID accountId);
 
+    Page<SettlementTransactionProjection> findByAppAccountId(UUID accountNumber, Pageable pageable);
+
 }
