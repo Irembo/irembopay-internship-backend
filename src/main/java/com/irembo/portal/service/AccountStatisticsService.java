@@ -138,7 +138,7 @@ public class AccountStatisticsService {
 
             Map<String, Object> dailyPaidInvoicesMap = new HashMap<>();
             dailyPaidInvoicesMap.put("date", date);
-            dailyPaidInvoicesMap.put("totalPaidInvoices", totalPaidInvoices);
+            dailyPaidInvoicesMap.put("value", totalPaidInvoices);
             dailyPaidInvoices.add(dailyPaidInvoicesMap);
         }
 
@@ -165,7 +165,7 @@ public class AccountStatisticsService {
 
             Map<String, Object> dailySettledTransactionsMap = new HashMap<>();
             dailySettledTransactionsMap.put("date", date);
-            dailySettledTransactionsMap.put("totalSettledTransactions", totalSettledTransactions);
+            dailySettledTransactionsMap.put("value", totalSettledTransactions);
             dailySettledTransactions.add(dailySettledTransactionsMap);
         }
 
