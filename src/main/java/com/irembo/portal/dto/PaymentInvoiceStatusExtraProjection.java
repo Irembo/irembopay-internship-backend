@@ -6,4 +6,7 @@ public interface PaymentInvoiceStatusExtraProjection extends PaymentInvoiceStatu
     LocalDateTime getSettledAt();
 
     LocalDateTime getPaymentMadeAt();
+
+    String getAccountType();
+
 }

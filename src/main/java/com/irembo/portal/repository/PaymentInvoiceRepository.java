@@ -79,9 +79,11 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
                         "pi.settledAt AS settledAt, " +
                         "pi.paymentStatus AS paymentStatus, " +
                         "st.settlementStatus AS status, " +
-                        "pi.payoutAmount AS invoicePayout " +
+                        "pi.payoutAmount AS invoicePayout, " +
+                        "ma.type AS accountType " +
                         "FROM PaymentInvoice pi " +
                         "LEFT JOIN pi.settlementTransactionId st " +
+                        "RIGHT JOIN pi.merchantAccountId ma " +
                         "WHERE pi.id = :invoiceId AND pi.paymentStatus != 'NEW'")
         PaymentInvoiceStatusExtraProjection getPaymentInvoiceDetailsWithStatus(UUID invoiceId);
 
