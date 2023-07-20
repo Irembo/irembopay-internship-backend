@@ -52,4 +52,14 @@ public class AccountStatisticsController {
     public BigDecimal getAverageDailyTransactionValue(@PathVariable UUID accountId) {
         return accountStatisticsService.getAverageDailyTransactionValue(accountId);
     }
+
+    @GetMapping("/total-transcations/{accountId}/{cycle}")
+    public List<Map<String, Object>> getTotalTransactions(@PathVariable UUID accountId, @PathVariable int cycle) {
+        return accountStatisticsService.getTotalDailyPaidInvoices(accountId, cycle);
+    }
+
+    @GetMapping("/total-settled-transcations/{accountId}/{cycle}")
+    public List<Map<String, Object>> getTotalSettledTransactions(@PathVariable UUID accountId, @PathVariable int cycle) {
+        return accountStatisticsService.getTotalDailySettledTransactions(accountId, cycle);
+    }
 }

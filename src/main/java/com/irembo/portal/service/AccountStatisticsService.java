@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
@@ -120,6 +119,57 @@ public class AccountStatisticsService {
         BigDecimal totalTransactionValue = getTotalValueOfTransactionsLast30Days(accountId);
 
         return totalTransactionValue.divide(BigDecimal.valueOf(daysBetween), 2, RoundingMode.HALF_UP);
+    }
+
+    // get total daily paid invoices for the past N cycle (1 week, 1 month, 1 year)
+    public List<Map<String, Object>> getTotalDailyPaidInvoices(UUID accountId, int cycle) {
+        LocalDateTime cycleAgo = LocalDateTime.now().minusDays(365 + cycle);
+        LocalDateTime now = LocalDateTime.now().minusDays(365);
+        long daysBetween = ChronoUnit.DAYS.between(cycleAgo, now);
+
+        List<Map<String, Object>> dailyPaidInvoices = new ArrayList<>();
+
+        for (int i = 0; i < daysBetween; i++) {
+            LocalDateTime date = cycleAgo.plusDays(i);
+            long totalPaidInvoices = paymentInvoiceRepository.countByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfter(
+                    accountId,
+                    PaymentStatus.PAID,
+                    date);
+
+            Map<String, Object> dailyPaidInvoicesMap = new HashMap<>();
+            dailyPaidInvoicesMap.put("date", date);
+            dailyPaidInvoicesMap.put("totalPaidInvoices", totalPaidInvoices);
+            dailyPaidInvoices.add(dailyPaidInvoicesMap);
+        }
+
+        System.out.println(dailyPaidInvoices.size());
+
+        return dailyPaidInvoices;
+    }
+
+    // get total daily settled settlement_transactions for the past N cycle (1 week,
+    // 1 month, 1 year). where settlementStatus = "SETTLED"
+    public List<Map<String, Object>> getTotalDailySettledTransactions(UUID accountId, int cycle) {
+        LocalDateTime cycleAgo = LocalDateTime.now().minusDays(365 + cycle);
+        LocalDateTime now = LocalDateTime.now().minusDays(365);
+        long daysBetween = ChronoUnit.DAYS.between(cycleAgo, now);
+
+        List<Map<String, Object>> dailySettledTransactions = new ArrayList<>();
+
+        for (int i = 0; i < daysBetween; i++) {
+            LocalDateTime date = cycleAgo.plusDays(i);
+            BigDecimal totalSettledTransactions = settlementTransactionRepository
+                    .sumTransactionAmountByAccountIdAndSettlementDateAfter(
+                            accountId,
+                            date);
+
+            Map<String, Object> dailySettledTransactionsMap = new HashMap<>();
+            dailySettledTransactionsMap.put("date", date);
+            dailySettledTransactionsMap.put("totalSettledTransactions", totalSettledTransactions);
+            dailySettledTransactions.add(dailySettledTransactionsMap);
+        }
+
+        return dailySettledTransactions;
     }
 }
 
