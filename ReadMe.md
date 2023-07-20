@@ -10,10 +10,8 @@ The project follows a package-by-feature structure to organize the codebase in a
   - `config/`: Contains configuration classes for the application, such as database configuration and security configuration.
   - `controller/`: Holds REST controller classes responsible for handling HTTP requests and returning responses.
   - `dto/`: Contains Data Transfer Objects (DTOs) used for transferring data between layers or to external systems.
-  - `exception/`: Includes custom exception classes for handling application-specific exceptions.
   - `model/`: Contains entity and database model classes representing the application's data structure.
   - `repository/`: Holds database repository classes responsible for data access and persistence.
-  - `security/`: Contains classes related to security, such as authentication and authorization configurations.
   - `service/`: Holds service classes implementing the business logic and interacting with repositories and other services.
   - `util/`: Contains utility classes and helper methods.
 - `src/test/java/com/yourcompany/yourapplication/`: Contains test classes for the application.
@@ -44,10 +42,11 @@ Follow these steps to run the Irembo Customer Portal API:
 
 ## Configuration
 
-The project may require configuration based on your specific environment or preferences. Here are some configuration options:
+The project requires configuration based on your specific environment or preferences. Here are some configuration options:
 
-- Database Configuration: Configure the database connection properties in the `config/` package.
-- Security Configuration: Customize authentication and authorization settings in the `security/` package.
-- Application Properties: Adjust application-specific properties in the `application.properties` file located in `src/main/resources/`.
+- Database Configuration: Configure the database connection properties in the `application.properties` file located in `src/main/resources/`
+
+## Playing with the API
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://god.gw.postman.com/run-collection/25245671-56096998-e1b3-4a66-a66c-9093588c3781?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D25245671-56096998-e1b3-4a66-a66c-9093588c3781%26entityType%3Dcollection%26workspaceId%3Dfa07919f-0d8c-484a-9a59-9605f3c033c0)
 
 Happy coding! 🚀
