@@ -9,4 +9,5 @@ public interface PaymentInvoiceStatusExtraProjection extends PaymentInvoiceStatu
 
     String getAccountType();
 
+    String getIdentifier();
 }
