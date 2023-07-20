@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.irembo.portal.dto.PaymentInvoiceStatusExtraProjection;
 import com.irembo.portal.dto.PaymentInvoiceStatusProjection;
 import com.irembo.portal.service.PaymentInvoiceService;
 
@@ -35,7 +36,7 @@ public class PaymentInvoiceController {
     }
 
     @GetMapping("/invoice-number")
-    public PaymentInvoiceStatusProjection getPaymentInvoiceByInvoiceNumber(
+    public PaymentInvoiceStatusExtraProjection getPaymentInvoiceByInvoiceNumber(
             @RequestParam UUID invoiceId) {
         return paymentInvoiceService.getPaymentInvoiceById(invoiceId);
     }

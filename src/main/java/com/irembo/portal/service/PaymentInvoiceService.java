@@ -2,6 +2,7 @@ package com.irembo.portal.service;
 
 import org.springframework.stereotype.Service;
 
+import com.irembo.portal.dto.PaymentInvoiceStatusExtraProjection;
 import com.irembo.portal.dto.PaymentInvoiceStatusProjection;
 import com.irembo.portal.repository.PaymentInvoiceRepository;
 
@@ -29,7 +30,7 @@ public class PaymentInvoiceService {
     }
 
     // get one payment invoice by id
-    public PaymentInvoiceStatusProjection getPaymentInvoiceById(UUID id) {
+    public PaymentInvoiceStatusExtraProjection getPaymentInvoiceById(UUID id) {
         return paymentInvoiceRepository.getPaymentInvoiceDetailsWithStatus(id);
     }
 }

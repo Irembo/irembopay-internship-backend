@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.irembo.portal.dto.BalanceProjection;
+import com.irembo.portal.dto.PaymentInvoiceStatusExtraProjection;
 import com.irembo.portal.dto.PaymentInvoiceStatusProjection;
 import com.irembo.portal.model.PaymentInvoice;
 import org.springframework.stereotype.Repository;
@@ -74,12 +75,14 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
                         "pi.currency AS currency, " +
                         "pi.createdAt AS createdAt, " +
                         "pi.expiryAt AS expiryAt, " +
+                        "pi.paymentMadeAt AS paymentMadeAt, " +
+                        "pi.settledAt AS settledAt, " +
                         "pi.paymentStatus AS paymentStatus, " +
                         "st.settlementStatus AS status, " +
                         "pi.payoutAmount AS invoicePayout " +
                         "FROM PaymentInvoice pi " +
                         "LEFT JOIN pi.settlementTransactionId st " +
                         "WHERE pi.id = :invoiceId AND pi.paymentStatus != 'NEW'")
-        PaymentInvoiceStatusProjection getPaymentInvoiceDetailsWithStatus(UUID invoiceId);
+        PaymentInvoiceStatusExtraProjection getPaymentInvoiceDetailsWithStatus(UUID invoiceId);
 
 }
