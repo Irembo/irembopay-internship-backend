@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.irembo.portal.dto.BalanceProjection;
-import com.irembo.portal.dto.PaymentInvoiceProjection;
+import com.irembo.portal.dto.PaymentInvoiceStatusProjection;
 import com.irembo.portal.model.PaymentInvoice;
 import org.springframework.stereotype.Repository;
 
@@ -37,5 +37,49 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
         List<BalanceProjection> sumInvoiceAmountByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfter(UUID accountId,
                         LocalDateTime lastPayoutDone, LocalDateTime sevenDaysFromNow);
 
-        Page<PaymentInvoiceProjection> findByAppAccountId(UUID accountNumber, Pageable pageable);
+        @Query("SELECT " +
+                        "pi.id AS id, " +
+                        "pi.amount AS amount, " +
+                        "pi.invoiceNumber AS invoiceNumber, " +
+                        "pi.currency AS currency, " +
+                        "pi.createdAt AS createdAt, " +
+                        "pi.expiryAt AS expiryAt, " +
+                        "pi.paymentStatus AS paymentStatus, " +
+                        "st.settlementStatus AS status, " +
+                        "pi.payoutAmount AS invoicePayout " +
+                        "FROM PaymentInvoice pi " +
+                        "LEFT JOIN pi.settlementTransactionId st " +
+                        "WHERE pi.appAccountId = :accountNumber AND pi.paymentStatus != 'NEW'")
+        Page<PaymentInvoiceStatusProjection> findByAppAccountId(UUID accountNumber, Pageable pageable);
+
+        @Query("SELECT " +
+                        "pi.id AS id, " +
+                        "pi.amount AS amount, " +
+                        "pi.invoiceNumber AS invoiceNumber, " +
+                        "pi.currency AS currency, " +
+                        "pi.createdAt AS createdAt, " +
+                        "pi.expiryAt AS expiryAt, " +
+                        "pi.paymentStatus AS paymentStatus, " +
+                        "st.settlementStatus AS status, " +
+                        "pi.payoutAmount AS invoicePayout " +
+                        "FROM PaymentInvoice pi " +
+                        "LEFT JOIN pi.settlementTransactionId st " +
+                        "WHERE pi.appAccountId = :accountNumber AND pi.paymentStatus != 'NEW'")
+        List<PaymentInvoiceStatusProjection> findByAppAccountIdAll(UUID accountNumber);
+
+        @Query("SELECT " +
+                        "pi.id AS id, " +
+                        "pi.amount AS amount, " +
+                        "pi.invoiceNumber AS invoiceNumber, " +
+                        "pi.currency AS currency, " +
+                        "pi.createdAt AS createdAt, " +
+                        "pi.expiryAt AS expiryAt, " +
+                        "pi.paymentStatus AS paymentStatus, " +
+                        "st.settlementStatus AS status, " +
+                        "pi.payoutAmount AS invoicePayout " +
+                        "FROM PaymentInvoice pi " +
+                        "LEFT JOIN pi.settlementTransactionId st " +
+                        "WHERE pi.id = :invoiceId AND pi.paymentStatus != 'NEW'")
+        PaymentInvoiceStatusProjection getPaymentInvoiceDetailsWithStatus(UUID invoiceId);
+
 }

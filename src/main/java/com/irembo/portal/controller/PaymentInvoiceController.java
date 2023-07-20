@@ -1,5 +1,6 @@
 package com.irembo.portal.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.irembo.portal.dto.PaymentInvoiceProjection;
+import com.irembo.portal.dto.PaymentInvoiceStatusProjection;
 import com.irembo.portal.service.PaymentInvoiceService;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -23,8 +24,19 @@ public class PaymentInvoiceController {
     PaymentInvoiceService paymentInvoiceService;
 
     @GetMapping
-    public Page<PaymentInvoiceProjection> getAllPaymentInvoices(@RequestParam UUID accountId,
+    public Page<PaymentInvoiceStatusProjection> getAllPaymentInvoices(@RequestParam UUID accountId,
             Pageable pageable) {
         return paymentInvoiceService.getAllPaymentInvoices(accountId, pageable);
+    }
+
+    @GetMapping("/all")
+    public List<PaymentInvoiceStatusProjection> getAllPaymentInvoicesAll(@RequestParam UUID accountId) {
+        return paymentInvoiceService.getAllPaymentInvoicesAll(accountId);
+    }
+
+    @GetMapping("/invoice-number")
+    public PaymentInvoiceStatusProjection getPaymentInvoiceByInvoiceNumber(
+            @RequestParam UUID invoiceId) {
+        return paymentInvoiceService.getPaymentInvoiceById(invoiceId);
     }
 }
