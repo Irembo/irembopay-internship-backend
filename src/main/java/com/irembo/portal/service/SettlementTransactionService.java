@@ -29,4 +29,9 @@ public class SettlementTransactionService {
         return settlementTransactionRepository.findById(id);
     }
 
+    public Page<SettlementTransactionProjection> getAllSettlementTransactionsForDestinationAccountId(
+            UUID destinationAccountId, Pageable pageable) {
+        return settlementTransactionRepository.findAllProjectedByDestinationAccountId(destinationAccountId, pageable);
+    }
+
 }
