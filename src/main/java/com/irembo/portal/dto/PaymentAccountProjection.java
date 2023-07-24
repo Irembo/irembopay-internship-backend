@@ -15,5 +15,4 @@ public interface PaymentAccountProjection {
 
     String getType();
 
-    String getAppAccountId();
 }

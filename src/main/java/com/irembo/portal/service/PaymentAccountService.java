@@ -19,6 +19,6 @@ public class PaymentAccountService {
     private PaymentAccountRepository paymentAccountRepository;
 
     public Page<PaymentAccountProjection> getPaymentAccountsByAccountId(UUID accountNumber, Pageable pageable) {
-        return paymentAccountRepository.findByAppAccountId(accountNumber, pageable);
+        return paymentAccountRepository.findByAppAccountIdAndPublishedIsTrue(accountNumber, pageable);
     }
 }
