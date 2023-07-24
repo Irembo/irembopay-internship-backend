@@ -10,7 +10,6 @@ import com.irembo.portal.repository.PaymentInvoiceRepository;
 import com.irembo.portal.repository.SettlementTransactionRepository;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -54,6 +53,9 @@ public class AccountStatisticsService {
         List<BalanceProjection> currentBalance = getAccountBalance(accountId);
 
         // TODO: get last payout date
+
+        // check settlement transcaction logs for latest payout date
+
         LocalDateTime lastPayoutDate = LocalDateTime.now().minusDays(356);
         LocalDateTime sevenDaysFromNow = LocalDateTime.now().plusDays(7);
 
