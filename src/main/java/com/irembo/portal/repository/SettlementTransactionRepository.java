@@ -38,7 +38,7 @@ public interface SettlementTransactionRepository extends JpaRepository<Settlemen
 
         Page<SettlementTransactionProjection> findByAppAccountId(UUID accountNumber, Pageable pageable);
 
-        @Query(value = "SELECT * FROM settlement_transaction st WHERE st.destination_account_id = ?1", nativeQuery = true)
+        @Query(value = "SELECT id, currency, status, amount, app_account_id as appAccountId, created_at as createdAt, settlement_date as settlementDate, settlement_status as settlementStatus FROM settlement_transaction st WHERE st.destination_account_id = ?1 AND settlement_status = 'DONE'", nativeQuery = true)
         Page<SettlementTransactionProjection> findAllProjectedByDestinationAccountId(UUID destinationAccountId,
                         Pageable pageable);
 
