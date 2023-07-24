@@ -111,8 +111,7 @@ public class AccountStatisticsService {
     }
 
     public List<CountProjection> getTotalPaidInvoicesLast7DaysForPaymentAccount(UUID accountId, UUID accountNumber) {
-        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(365 + 7);
-        System.out.println(sevenDaysAgo);
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(365 + 30);
 
         // filter merchantAccountId
         return paymentInvoiceRepository.countByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfterAndMerchantAccountId(
