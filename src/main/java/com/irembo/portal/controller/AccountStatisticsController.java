@@ -3,10 +3,14 @@ package com.irembo.portal.controller;
 import java.math.BigDecimal;
 import java.util.UUID;
 import com.irembo.portal.dto.BalanceProjection;
+import com.irembo.portal.dto.PaymentAccountBalance;
+
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +30,12 @@ public class AccountStatisticsController {
     @GetMapping("/balance/{accountId}")
     public List<BalanceProjection> getAccountBalance(@PathVariable UUID accountId) {
         return accountStatisticsService.getAccountBalance(accountId);
+    }
+
+    @GetMapping("/balance/payment-account/{accountId}/{accountNumber}")
+    public Page<PaymentAccountBalance> getAccountBalance(@PathVariable UUID accountId, @PathVariable UUID accountNumber,
+            Pageable pageable) {
+        return accountStatisticsService.getAccountBalanceForPaymentAccount(accountId, accountNumber, pageable);
     }
 
     @GetMapping("/projected-balance/{accountId}")
@@ -59,7 +69,8 @@ public class AccountStatisticsController {
     }
 
     @GetMapping("/total-settled-transcations/{accountId}/{cycle}")
-    public List<Map<String, Object>> getTotalSettledTransactions(@PathVariable UUID accountId, @PathVariable int cycle) {
+    public List<Map<String, Object>> getTotalSettledTransactions(@PathVariable UUID accountId,
+            @PathVariable int cycle) {
         return accountStatisticsService.getTotalDailySettledTransactions(accountId, cycle);
     }
 }

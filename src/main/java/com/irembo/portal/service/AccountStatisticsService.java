@@ -3,6 +3,8 @@ package com.irembo.portal.service;
 import org.springframework.stereotype.Service;
 
 import com.irembo.portal.dto.BalanceProjection;
+import com.irembo.portal.dto.PaymentAccountBalance;
+import com.irembo.portal.repository.PaymentAccountRepository;
 import com.irembo.portal.repository.PaymentInvoiceRepository;
 import com.irembo.portal.repository.SettlementTransactionRepository;
 
@@ -17,12 +19,17 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class AccountStatisticsService {
 
     @Autowired
     private PaymentInvoiceRepository paymentInvoiceRepository;
+
+    @Autowired
+    private PaymentAccountRepository paymentAccountRepository;
 
     @Autowired
     private SettlementTransactionRepository settlementTransactionRepository;
@@ -34,6 +41,11 @@ public class AccountStatisticsService {
                         accountId);
 
         return settledInvoices;
+    }
+
+    public Page<PaymentAccountBalance>  getAccountBalanceForPaymentAccount(UUID accountId, UUID accountNumber,Pageable pageable) {
+
+        return paymentAccountRepository.getBalanceForPaymentAccount(accountId, accountNumber,pageable);
     }
 
     public List<Map<String, Object>> getProjectedBalanceAfter7Days(UUID accountId) {

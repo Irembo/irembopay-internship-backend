@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.irembo.portal.dto.PaymentAccountBalance;
 import com.irembo.portal.dto.PaymentAccountProjection;
 import com.irembo.portal.model.PaymentAccount;
 
@@ -21,4 +22,7 @@ public interface PaymentAccountRepository extends JpaRepository<PaymentAccount, 
 
     @Query("SELECT pa FROM PaymentAccount pa WHERE pa.appAccountId = :accountNumber AND pa.published = true AND status = 'ACTIVE'")
     Page<PaymentAccountProjection> findByAppAccountIdAndPublishedIsTrue(UUID accountNumber, Pageable pageable);
+
+    @Query("SELECT pa FROM PaymentAccount pa WHERE pa.appAccountId = :accountId AND pa.id = :accountNumber")
+    Page<PaymentAccountBalance> getBalanceForPaymentAccount(UUID accountId, UUID accountNumber, Pageable pageable);
 }
