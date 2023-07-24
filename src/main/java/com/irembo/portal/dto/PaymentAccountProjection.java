@@ -14,4 +14,5 @@ public interface PaymentAccountProjection {
     String getStatus();
 
     String getType();
+
 }

@@ -3,6 +3,7 @@ package com.irembo.portal.service;
 import org.springframework.stereotype.Service;
 
 import com.irembo.portal.dto.BalanceProjection;
+import com.irembo.portal.dto.CountProjection;
 import com.irembo.portal.dto.PaymentAccountBalance;
 import com.irembo.portal.repository.PaymentAccountRepository;
 import com.irembo.portal.repository.PaymentInvoiceRepository;
@@ -43,9 +44,10 @@ public class AccountStatisticsService {
         return settledInvoices;
     }
 
-    public Page<PaymentAccountBalance>  getAccountBalanceForPaymentAccount(UUID accountId, UUID accountNumber,Pageable pageable) {
+    public Page<PaymentAccountBalance> getAccountBalanceForPaymentAccount(UUID accountId, UUID accountNumber,
+            Pageable pageable) {
 
-        return paymentAccountRepository.getBalanceForPaymentAccount(accountId, accountNumber,pageable);
+        return paymentAccountRepository.getBalanceForPaymentAccount(accountId, accountNumber, pageable);
     }
 
     public List<Map<String, Object>> getProjectedBalanceAfter7Days(UUID accountId) {
@@ -108,29 +110,29 @@ public class AccountStatisticsService {
                 sevenDaysAgo);
     }
 
-    public BigDecimal getTotalValueOfTransactionsLast7Days(UUID accountId) {
+    public List<CountProjection> getTotalPaidInvoicesLast7DaysForPaymentAccount(UUID accountId, UUID accountNumber) {
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(365 + 7);
+        System.out.println(sevenDaysAgo);
+
+        // filter merchantAccountId
+        return paymentInvoiceRepository.countByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfterAndMerchantAccountId(
+                sevenDaysAgo, accountNumber);
+    }
+
+    public List<CountProjection> getTotalValueOfTransactionsLast7Days(UUID accountNumber) {
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(365 + 7);
 
         return settlementTransactionRepository.sumTransactionAmountByAccountIdAndSettlementDateAfter(
-                accountId,
-                sevenDaysAgo);
+
+                sevenDaysAgo, accountNumber);
     }
 
-    public BigDecimal getTotalValueOfTransactionsLast30Days(UUID accountId) {
+    public List<CountProjection> getTotalValueOfTransactionsLast30Days(UUID accountNumber) {
         LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(365 + 30);
 
         return settlementTransactionRepository.sumTransactionAmountByAccountIdAndSettlementDateAfter(
-                accountId,
-                thirtyDaysAgo);
-    }
 
-    public BigDecimal getAverageDailyTransactionValue(UUID accountId) {
-        LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(365 + 30);
-        LocalDateTime now = LocalDateTime.now();
-        long daysBetween = ChronoUnit.DAYS.between(thirtyDaysAgo, now);
-        BigDecimal totalTransactionValue = getTotalValueOfTransactionsLast30Days(accountId);
-
-        return totalTransactionValue.divide(BigDecimal.valueOf(daysBetween), 2, RoundingMode.HALF_UP);
+                thirtyDaysAgo, accountNumber);
     }
 
     // get total daily paid invoices for the past N cycle (1 week, 1 month, 1 year)
@@ -171,7 +173,7 @@ public class AccountStatisticsService {
         for (int i = 0; i < daysBetween; i++) {
             LocalDateTime date = cycleAgo.plusDays(i);
             BigDecimal totalSettledTransactions = settlementTransactionRepository
-                    .sumTransactionAmountByAccountIdAndSettlementDateAfter(
+                    .sumTransactionAmountByAccountIdAndSettlementDateAfterCycle(
                             accountId,
                             date);
 

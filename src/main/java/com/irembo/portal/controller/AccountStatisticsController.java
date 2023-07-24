@@ -1,8 +1,8 @@
 package com.irembo.portal.controller;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 import com.irembo.portal.dto.BalanceProjection;
+import com.irembo.portal.dto.CountProjection;
 import com.irembo.portal.dto.PaymentAccountBalance;
 
 import java.util.List;
@@ -48,19 +48,22 @@ public class AccountStatisticsController {
         return accountStatisticsService.getTotalPaidInvoicesLast7Days(accountId);
     }
 
-    @GetMapping("/total-transaction-value-last-7-days/{accountId}")
-    public BigDecimal getTotalValueOfTransactionsLast7Days(@PathVariable UUID accountId) {
-        return accountStatisticsService.getTotalValueOfTransactionsLast7Days(accountId);
+    @GetMapping("/total-paid-invoices-for-payment-account/{accountId}/{accountNumber}")
+    public List<CountProjection> getTotalPaidInvoicesLast7DaysForPaymentAccount(@PathVariable UUID accountId,
+            @PathVariable UUID accountNumber) {
+        return accountStatisticsService.getTotalPaidInvoicesLast7DaysForPaymentAccount(accountId, accountNumber);
     }
 
-    @GetMapping("/total-transaction-value-last-30-days/{accountId}")
-    public BigDecimal getTotalValueOfTransactionsLast30Days(@PathVariable UUID accountId) {
-        return accountStatisticsService.getTotalValueOfTransactionsLast30Days(accountId);
+    @GetMapping("/total-transaction-value-last-7-days/{accountNumber}")
+    public List<CountProjection> getTotalValueOfTransactionsLast7Days(
+            @PathVariable UUID accountNumber) {
+        return accountStatisticsService.getTotalValueOfTransactionsLast7Days(accountNumber);
     }
 
-    @GetMapping("/average-daily-transaction-value/{accountId}")
-    public BigDecimal getAverageDailyTransactionValue(@PathVariable UUID accountId) {
-        return accountStatisticsService.getAverageDailyTransactionValue(accountId);
+    @GetMapping("/total-transaction-value-last-30-days/{accountNumber}")
+    public List<CountProjection> getTotalValueOfTransactionsLast30Days(
+            @PathVariable UUID accountNumber) {
+        return accountStatisticsService.getTotalValueOfTransactionsLast30Days(accountNumber);
     }
 
     @GetMapping("/total-transcations/{accountId}/{cycle}")

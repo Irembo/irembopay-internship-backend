@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.irembo.portal.dto.BalanceProjection;
+import com.irembo.portal.dto.CountProjection;
 import com.irembo.portal.dto.PaymentInvoiceStatusExtraProjection;
 import com.irembo.portal.dto.PaymentInvoiceStatusProjection;
 import com.irembo.portal.model.PaymentInvoice;
@@ -87,5 +88,9 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
                         "LEFT JOIN pi.merchantAccountId ma " +
                         "WHERE pi.id = :invoiceId AND pi.paymentStatus != 'NEW'")
         PaymentInvoiceStatusExtraProjection getPaymentInvoiceDetailsWithStatus(UUID invoiceId);
+
+        @Query(value = "SELECT count(id) FROM payment_invoice where merchant_account_id = ?2 AND payment_made_at > ?1", nativeQuery = true)
+        List<CountProjection> countByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfterAndMerchantAccountId(
+                        LocalDateTime sevenDaysAgo, UUID accountNumber);
 
 }

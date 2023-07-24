@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.irembo.portal.dto.BalanceProjection;
+import com.irembo.portal.dto.CountProjection;
 import com.irembo.portal.dto.SettlementTransactionProjection;
 import com.irembo.portal.model.SettlementTransaction;
 
@@ -20,8 +21,11 @@ public interface SettlementTransactionRepository extends JpaRepository<Settlemen
     Page<SettlementTransactionProjection> findAllProjectedBy(Pageable pageable);
 
     // create sumTransactionAmountByAccountIdAndSettlementDateAfter query method
-    @Query("SELECT SUM(st.amount) FROM SettlementTransaction st WHERE st.appAccountId = ?1 AND st.settlementDate > ?2")
-    BigDecimal sumTransactionAmountByAccountIdAndSettlementDateAfter(UUID accountId, LocalDateTime sevenDaysAgo);
+    @Query(value = "SELECT SUM(st.amount) FROM settlement_transaction st WHERE st.settlement_date > ?1 AND st.destination_account_id != ?2",nativeQuery = true)
+    List<CountProjection> sumTransactionAmountByAccountIdAndSettlementDateAfter(LocalDateTime sevenDaysAgo, UUID accountNumber);
+
+    @Query(value = "SELECT SUM(st.amount) FROM settlement_transaction st WHERE st.app_account_id = ?1 AND st.settlement_date > ?2",nativeQuery = true)
+    BigDecimal sumTransactionAmountByAccountIdAndSettlementDateAfterCycle(UUID accountId, LocalDateTime sevenDaysAgo);
 
     @Query(value = "SELECT currency, SUM(amount) AS totalAmount\n" + //
             "FROM settlement_transaction st\n" + //
