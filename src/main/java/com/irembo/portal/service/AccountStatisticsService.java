@@ -138,8 +138,8 @@ public class AccountStatisticsService {
 
     // get total daily paid invoices for the past N cycle (1 week, 1 month, 1 year)
     public List<Map<String, Object>> getTotalDailyPaidInvoices(UUID accountId, int cycle) {
-        LocalDateTime cycleAgo = LocalDateTime.now().minusDays(245 + cycle);
-        LocalDateTime now = LocalDateTime.now().minusDays(245);
+        LocalDateTime cycleAgo = LocalDateTime.now().minusDays(260 + cycle);
+        LocalDateTime now = LocalDateTime.now().minusDays(260);
         long daysBetween = ChronoUnit.DAYS.between(cycleAgo, now);
 
         List<Map<String, Object>> dailyPaidInvoices = new ArrayList<>();
@@ -165,8 +165,8 @@ public class AccountStatisticsService {
     // get total daily settled settlement_transactions for the past N cycle (1 week,
     // 1 month, 1 year). where settlementStatus = "SETTLED"
     public List<Map<String, Object>> getTotalDailySettledTransactions(UUID accountId, int cycle) {
-        LocalDateTime cycleAgo = LocalDateTime.now().minusDays(245 + cycle);
-        LocalDateTime now = LocalDateTime.now().minusDays(245);
+        LocalDateTime cycleAgo = LocalDateTime.now().minusDays(250 + cycle);
+        LocalDateTime now = LocalDateTime.now().minusDays(250);
         long daysBetween = ChronoUnit.DAYS.between(cycleAgo, now);
 
         List<Map<String, Object>> dailySettledTransactions = new ArrayList<>();
@@ -174,7 +174,7 @@ public class AccountStatisticsService {
         for (int i = 0; i < daysBetween; i++) {
             LocalDateTime date = cycleAgo.plusDays(i);
             BigDecimal totalSettledTransactions = settlementTransactionRepository
-                    .sumTransactionAmountByAccountIdAndSettlementDateAfterCycle(
+                    .countTransactionAmountByAccountIdAndSettlementDateAfterCycle(
                             accountId,
                             date);
 

@@ -6,12 +6,22 @@ import java.util.UUID;
 
 public interface SettlementTransactionProjection {
     UUID getId();
+
     BigDecimal getAmount();
+
     LocalDateTime getCreatedAt();
+
     String getCurrency();
+
     LocalDateTime getSettlementDate();
+
     String getSettlementStatus();
+
     String getStatus();
 
     UUID getAppAccountId();
+
+    String getTransactionReference();
+
+    String getNarration();
 }

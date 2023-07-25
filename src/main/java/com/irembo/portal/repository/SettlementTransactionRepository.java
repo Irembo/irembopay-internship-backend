@@ -25,8 +25,8 @@ public interface SettlementTransactionRepository extends JpaRepository<Settlemen
         List<CountProjection> sumTransactionAmountByAccountIdAndSettlementDateAfter(LocalDateTime sevenDaysAgo,
                         UUID accountNumber);
 
-        @Query(value = "SELECT SUM(st.amount) FROM settlement_transaction st WHERE st.app_account_id = ?1 AND st.settlement_date > ?2", nativeQuery = true)
-        BigDecimal sumTransactionAmountByAccountIdAndSettlementDateAfterCycle(UUID accountId,
+        @Query(value = "SELECT COUNT(st.id) FROM settlement_transaction st WHERE st.app_account_id = ?1 AND st.settlement_date > ?2", nativeQuery = true)
+        BigDecimal countTransactionAmountByAccountIdAndSettlementDateAfterCycle(UUID accountId,
                         LocalDateTime sevenDaysAgo);
 
         @Query(value = "SELECT currency, SUM(amount) AS totalAmount\n" + //
@@ -38,7 +38,7 @@ public interface SettlementTransactionRepository extends JpaRepository<Settlemen
 
         Page<SettlementTransactionProjection> findByAppAccountId(UUID accountNumber, Pageable pageable);
 
-        @Query(value = "SELECT id, currency, status, amount, app_account_id as appAccountId, created_at as createdAt, settlement_date as settlementDate, settlement_status as settlementStatus FROM settlement_transaction st WHERE st.destination_account_id = ?1 AND settlement_status = 'DONE'", nativeQuery = true)
+        @Query(value = "SELECT id, currency, status, amount, app_account_id as appAccountId, created_at as createdAt, settlement_date as settlementDate, settlement_status as settlementStatus, transaction_reference as transactionReference, narration FROM settlement_transaction st WHERE st.destination_account_id = ?1 AND st.settlement_status = 'DONE'", nativeQuery = true)
         Page<SettlementTransactionProjection> findAllProjectedByDestinationAccountId(UUID destinationAccountId,
                         Pageable pageable);
 
