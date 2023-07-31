@@ -110,7 +110,7 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
                         "pi.payoutAmount AS invoicePayout " +
                         "FROM PaymentInvoice pi " +
                         "LEFT JOIN pi.settlementTransactionId st " +
-                        "WHERE pi.appAccountId = :appAccountId AND pi.invoiceNumber = :invoiceNumber OR upper(pi.paymentStatus) LIKE upper(concat('%', :search, '%'))")
+                        "WHERE pi.appAccountId = :appAccountId AND pi.invoiceNumber = :invoiceNumber OR upper(pi.paymentStatus) LIKE upper(concat('%', :search, '%')) OR upper(st.settlementStatus) LIKE upper(concat('%', :search, '%'))")
         Page<PaymentInvoiceStatusProjection> searchForInvoice(
                         UUID appAccountId, String invoiceNumber, String search, Pageable pageable);
 
