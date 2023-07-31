@@ -93,4 +93,20 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
         List<CountProjection> countByAppAccountIdAndPaymentStatusAndPaymentMadeAtAfterAndMerchantAccountId(
                         LocalDateTime sevenDaysAgo, UUID accountNumber);
 
+        @Query("SELECT " +
+                        "pi.id AS id, " +
+                        "pi.amount AS amount, " +
+                        "pi.invoiceNumber AS invoiceNumber, " +
+                        "pi.currency AS currency, " +
+                        "pi.createdAt AS createdAt, " +
+                        "pi.expiryAt AS expiryAt, " +
+                        "pi.paymentStatus AS paymentStatus, " +
+                        "st.settlementStatus AS status, " +
+                        "pi.payoutAmount AS invoicePayout " +
+                        "FROM PaymentInvoice pi " +
+                        "LEFT JOIN pi.settlementTransactionId st " +
+                        "WHERE pi.appAccountId = :appAccountId AND pi.invoiceNumber = :search OR upper(pi.paymentStatus) LIKE upper(concat('%', :search, '%'))")
+        Page<PaymentInvoiceStatusProjection> searchForInvoice(
+                        UUID appAccountId, String search, Pageable pageable);
+
 }

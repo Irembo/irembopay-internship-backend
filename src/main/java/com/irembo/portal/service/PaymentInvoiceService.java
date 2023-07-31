@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.irembo.portal.dto.PaymentInvoiceStatusExtraProjection;
 import com.irembo.portal.dto.PaymentInvoiceStatusProjection;
+import com.irembo.portal.model.PaymentInvoice;
 import com.irembo.portal.repository.PaymentInvoiceRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,19 @@ public class PaymentInvoiceService {
     // get one payment invoice by id
     public PaymentInvoiceStatusExtraProjection getPaymentInvoiceById(UUID id) {
         return paymentInvoiceRepository.getPaymentInvoiceDetailsWithStatus(id);
+    }
+
+    public Page<PaymentInvoiceStatusProjection> searchPaymentInvoice(UUID accountNumber, String search,
+            Pageable pageable) {
+        // If 'search' parameter is null or empty, retrieve all invoices for the
+        // specified account
+        if (search == null || search.trim().isEmpty()) {
+            return paymentInvoiceRepository.findByAppAccountId(accountNumber, pageable);
+        }
+
+        // Perform the search based on invoice number and status
+        return paymentInvoiceRepository
+                .searchForInvoice(
+                        accountNumber, search, pageable);
     }
 }
