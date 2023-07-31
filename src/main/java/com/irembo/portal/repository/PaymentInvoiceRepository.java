@@ -1,20 +1,21 @@
 package com.irembo.portal.repository;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.irembo.portal.dto.BalanceProjection;
 import com.irembo.portal.dto.CountProjection;
 import com.irembo.portal.dto.PaymentInvoiceStatusExtraProjection;
 import com.irembo.portal.dto.PaymentInvoiceStatusProjection;
 import com.irembo.portal.model.PaymentInvoice;
-import org.springframework.stereotype.Repository;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @Repository
 public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, UUID> {
@@ -48,6 +49,7 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
                         "pi.expiryAt AS expiryAt, " +
                         "pi.paymentStatus AS paymentStatus, " +
                         "st.settlementStatus AS status, " +
+                        "st.id AS settlementTransactionId, " +
                         "pi.payoutAmount AS invoicePayout " +
                         "FROM PaymentInvoice pi " +
                         "LEFT JOIN pi.settlementTransactionId st " +
@@ -63,6 +65,7 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
                         "pi.expiryAt AS expiryAt, " +
                         "pi.paymentStatus AS paymentStatus, " +
                         "st.settlementStatus AS status, " +
+                        "st.id AS settlementTransactionId, " +
                         "pi.payoutAmount AS invoicePayout " +
                         "FROM PaymentInvoice pi " +
                         "LEFT JOIN pi.settlementTransactionId st " +
@@ -80,6 +83,7 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
                         "pi.settledAt AS settledAt, " +
                         "pi.paymentStatus AS paymentStatus, " +
                         "st.settlementStatus AS status, " +
+                        "st.id AS settlementTransactionId, " +
                         "pi.payoutAmount AS invoicePayout, " +
                         "ma.identifier AS identifier, " +
                         "ma.type AS accountType " +
@@ -102,11 +106,12 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
                         "pi.expiryAt AS expiryAt, " +
                         "pi.paymentStatus AS paymentStatus, " +
                         "st.settlementStatus AS status, " +
+                        "st.id AS settlementTransactionId, " +
                         "pi.payoutAmount AS invoicePayout " +
                         "FROM PaymentInvoice pi " +
                         "LEFT JOIN pi.settlementTransactionId st " +
-                        "WHERE pi.appAccountId = :appAccountId AND pi.invoiceNumber = :search OR upper(pi.paymentStatus) LIKE upper(concat('%', :search, '%'))")
+                        "WHERE pi.appAccountId = :appAccountId AND pi.invoiceNumber = :invoiceNumber OR upper(pi.paymentStatus) LIKE upper(concat('%', :search, '%'))")
         Page<PaymentInvoiceStatusProjection> searchForInvoice(
-                        UUID appAccountId, String search, Pageable pageable);
+                        UUID appAccountId, String invoiceNumber, String search, Pageable pageable);
 
 }

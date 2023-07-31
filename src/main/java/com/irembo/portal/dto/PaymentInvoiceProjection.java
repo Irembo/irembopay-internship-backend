@@ -6,12 +6,20 @@ import java.util.UUID;
 
 public interface PaymentInvoiceProjection {
     BigDecimal getAmount();
+
     LocalDateTime getCreatedAt();
+
     String getCurrency();
+
     LocalDateTime getExpiryAt();
+
     String getInvoiceNumber();
+
     UUID getId();
+
     String getPaymentStatus();
+
+    String getSettlementTransactionId();
 
     UUID getAppAccountId();
 

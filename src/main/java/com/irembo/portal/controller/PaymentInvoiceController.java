@@ -1,5 +1,6 @@
 package com.irembo.portal.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,8 +45,13 @@ public class PaymentInvoiceController {
 
     @GetMapping("/search/{accountId}")
     public Page<PaymentInvoiceStatusProjection> searchPaymentInvoice(@PathVariable UUID accountId,
-            @RequestParam String search, Pageable pageable) {
-        return paymentInvoiceService.searchPaymentInvoice(accountId, search, pageable);
+            @RequestParam(required = false) String invoiceNumber, @RequestParam(required = false) String status,
+            Pageable pageable) {
+        if (invoiceNumber == null && status == null) {
+            throw new IllegalArgumentException(
+                    "At least one of the request parameters 'invoiceNumber' or 'status' is required.");
+        }
+        return paymentInvoiceService.searchPaymentInvoice(accountId, invoiceNumber, status, pageable);
     }
 
 }

@@ -22,4 +22,6 @@ public interface PaymentInvoiceStatusProjection {
     String getInvoiceNumber();
 
     BigDecimal getInvoicePayout();
+
+    String getSettlementTransactionId();
 }
