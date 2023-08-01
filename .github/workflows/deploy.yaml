@@ -32,6 +32,13 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
         run: mvn clean package
 
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install Railway CLI
+        run: npm install --global railway@latest
+
       - name: Deploy
         run: railway up
         env:
