@@ -40,7 +40,7 @@ Follow these steps to run the Irembo Customer Portal API:
    ```
 6. The API will be accessible at `http://localhost:8080`.
 
-## Configuration
+## Configuration Settings
 
 The project requires configuration based on your specific environment or preferences. Here are some configuration options:
 
