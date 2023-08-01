@@ -15,7 +15,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: "20"
+          java-version: "19"
           distribution: "oracle"
 
       - name: Set up environment variables

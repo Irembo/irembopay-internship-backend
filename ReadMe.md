@@ -20,7 +20,7 @@ The project follows a package-by-feature structure to organize the codebase in a
 
 Before running the project, ensure you have the following prerequisites installed:
 
-- Java Development Kit (JDK) 20 or higher
+- Java Development Kit (JDK) 19 or higher
 - Maven (for dependency management)
 
 ## Running the Project
