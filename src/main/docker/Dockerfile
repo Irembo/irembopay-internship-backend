@@ -1,4 +1,11 @@
 FROM openjdk:20-jdk-slim
 VOLUME /tmp
-ADD spring-boot-docker-1.0.jar app.jar
+
+# create app directory
+RUN mkdir -p /app
+WORKDIR /app
+
+# create jar file
+
+
 ENTRYPOINT ["java","-jar","/app.jar"]
