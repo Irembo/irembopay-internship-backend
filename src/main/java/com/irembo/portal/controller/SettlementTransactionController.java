@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.irembo.portal.dto.SettlementTransactionProjection;
 import com.irembo.portal.service.SettlementTransactionService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://irembo-customer-portal.vercel.app"})
 @RestController
 @RequestMapping("/api/settlement-transaction")
 public class SettlementTransactionController {

@@ -18,7 +18,7 @@ import com.irembo.portal.dto.PaymentInvoiceStatusExtraProjection;
 import com.irembo.portal.dto.PaymentInvoiceStatusProjection;
 import com.irembo.portal.service.PaymentInvoiceService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://irembo-customer-portal.vercel.app"})
 @RestController
 @RequestMapping("/api/payment-invoice")
 public class PaymentInvoiceController {

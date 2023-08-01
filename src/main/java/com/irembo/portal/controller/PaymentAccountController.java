@@ -17,7 +17,7 @@ import com.irembo.portal.dto.PaymentAccountProjection;
 
 import com.irembo.portal.service.PaymentAccountService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://irembo-customer-portal.vercel.app"})
 @RestController
 @RequestMapping("/api/payment-account")
 public class PaymentAccountController {
