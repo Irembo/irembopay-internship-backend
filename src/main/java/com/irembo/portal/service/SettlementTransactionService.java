@@ -1,17 +1,18 @@
 package com.irembo.portal.service;
 
-import org.springframework.stereotype.Service;
-
-import com.irembo.portal.dto.SettlementTransactionProjection;
-import com.irembo.portal.model.SettlementTransaction;
-import com.irembo.portal.repository.SettlementTransactionRepository;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
+import com.irembo.portal.dto.SettlementTransactionProjection;
+import com.irembo.portal.exception.ApiException;
+import com.irembo.portal.model.SettlementTransaction;
+import com.irembo.portal.repository.SettlementTransactionRepository;
 
 @Service
 public class SettlementTransactionService {
@@ -21,17 +22,48 @@ public class SettlementTransactionService {
 
     // get all payment invoices
     public Page<SettlementTransactionProjection> getAllSettlementTrasncation(UUID accountNumber, Pageable pageable) {
-        return settlementTransactionRepository.findByAppAccountId(accountNumber, pageable);
+        try {
+            if (accountNumber == null) {
+                throw new IllegalArgumentException("Account number is required");
+            }
+            return settlementTransactionRepository.findByAppAccountId(accountNumber, pageable);
+        } catch (IllegalArgumentException e) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (Exception e) {
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+        }
+
     }
 
     // get one payment invoice by id
     public Optional<SettlementTransaction> getPaymentInvoiceById(UUID id) {
-        return settlementTransactionRepository.findById(id);
+        try {
+            if (id == null) {
+                throw new IllegalArgumentException("Account number is required");
+            }
+            return settlementTransactionRepository.findById(id);
+        } catch (IllegalArgumentException e) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (Exception e) {
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+        }
+
     }
 
     public Page<SettlementTransactionProjection> getAllSettlementTransactionsForDestinationAccountId(
             UUID destinationAccountId, Pageable pageable) {
-        return settlementTransactionRepository.findAllProjectedByDestinationAccountId(destinationAccountId, pageable);
+        try {
+            if (destinationAccountId == null) {
+                throw new IllegalArgumentException("Account number is required");
+            }
+            return settlementTransactionRepository.findAllProjectedByDestinationAccountId(destinationAccountId,
+                    pageable);
+        } catch (IllegalArgumentException e) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (Exception e) {
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+        }
+
     }
 
 }

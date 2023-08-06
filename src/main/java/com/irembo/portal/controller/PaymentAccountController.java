@@ -29,7 +29,7 @@ public class PaymentAccountController {
 
     @GetMapping
     public Page<PaymentAccountProjection> getAllPaymentAccountsByMerchantId(
-            @RequestParam UUID accountId,
+            @RequestParam(required = false) UUID accountId,
             Pageable pageable) {
         return paymentAccountService.getPaymentAccountsByAccountId(accountId, pageable);
     }
