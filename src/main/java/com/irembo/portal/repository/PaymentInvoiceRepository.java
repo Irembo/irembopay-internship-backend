@@ -15,6 +15,7 @@ import com.irembo.portal.dto.BalanceProjection;
 import com.irembo.portal.dto.CountProjection;
 import com.irembo.portal.dto.PaymentInvoiceStatusExtraProjection;
 import com.irembo.portal.dto.PaymentInvoiceStatusProjection;
+import com.irembo.portal.dto.PaymentStatusProjection;
 import com.irembo.portal.model.PaymentInvoice;
 
 @Repository
@@ -113,5 +114,8 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
                         "WHERE pi.appAccountId = :appAccountId AND pi.invoiceNumber = :invoiceNumber OR upper(pi.paymentStatus) LIKE upper(concat('%', :search, '%')) OR upper(st.settlementStatus) LIKE upper(concat('%', :search, '%'))")
         Page<PaymentInvoiceStatusProjection> searchForInvoice(
                         UUID appAccountId, String invoiceNumber, String search, Pageable pageable);
+
+        @Query("SELECT p.paymentStatus as name, COUNT(p) as value FROM PaymentInvoice p where p.appAccountId = ?1 GROUP BY p.paymentStatus")
+        List<PaymentStatusProjection> countByAppAccountIdAndPaymentStatus(UUID accountId);
 
 }

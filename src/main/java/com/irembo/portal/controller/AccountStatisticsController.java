@@ -4,6 +4,7 @@ import java.util.UUID;
 import com.irembo.portal.dto.BalanceProjection;
 import com.irembo.portal.dto.CountProjection;
 import com.irembo.portal.dto.PaymentAccountBalance;
+import com.irembo.portal.dto.PaymentStatusProjection;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.irembo.portal.service.AccountStatisticsService;
 
-@CrossOrigin(origins = {"http://localhost:3000", "https://irembo-customer-portal.vercel.app"})
+@CrossOrigin(origins = { "http://localhost:3000", "https://irembo-customer-portal.vercel.app" })
 @RestController
 @RequestMapping("/api/account-statistics")
 public class AccountStatisticsController {
@@ -75,5 +76,10 @@ public class AccountStatisticsController {
     public List<Map<String, Object>> getTotalSettledTransactions(@PathVariable UUID accountId,
             @PathVariable int cycle) {
         return accountStatisticsService.getTotalDailySettledTransactions(accountId, cycle);
+    }
+
+    @GetMapping("/payment-status/{accountId}")
+    public List<PaymentStatusProjection> getPaymentStatusGrouped(@PathVariable UUID accountId) {
+        return accountStatisticsService.getTotalInvoicesByStatus(accountId);
     }
 }

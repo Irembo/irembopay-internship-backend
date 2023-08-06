@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.irembo.portal.dto.BalanceProjection;
 import com.irembo.portal.dto.CountProjection;
 import com.irembo.portal.dto.PaymentAccountBalance;
+import com.irembo.portal.dto.PaymentStatusProjection;
 import com.irembo.portal.repository.PaymentAccountRepository;
 import com.irembo.portal.repository.PaymentInvoiceRepository;
 import com.irembo.portal.repository.SettlementTransactionRepository;
@@ -138,8 +139,8 @@ public class AccountStatisticsService {
 
     // get total daily paid invoices for the past N cycle (1 week, 1 month, 1 year)
     public List<Map<String, Object>> getTotalDailyPaidInvoices(UUID accountId, int cycle) {
-        LocalDateTime cycleAgo = LocalDateTime.now().minusDays(260 + cycle);
-        LocalDateTime now = LocalDateTime.now().minusDays(260);
+        LocalDateTime cycleAgo = LocalDateTime.now().minusDays(350 + cycle);
+        LocalDateTime now = LocalDateTime.now().minusDays(350);
         long daysBetween = ChronoUnit.DAYS.between(cycleAgo, now);
 
         List<Map<String, Object>> dailyPaidInvoices = new ArrayList<>();
@@ -162,11 +163,16 @@ public class AccountStatisticsService {
         return dailyPaidInvoices;
     }
 
+    // get a count of all invoices group by status. Using payment status field. Returns a count for each status
+    public List<PaymentStatusProjection> getTotalInvoicesByStatus(UUID accountId) {
+        return paymentInvoiceRepository.countByAppAccountIdAndPaymentStatus(accountId);
+    }
+
     // get total daily settled settlement_transactions for the past N cycle (1 week,
     // 1 month, 1 year). where settlementStatus = "SETTLED"
     public List<Map<String, Object>> getTotalDailySettledTransactions(UUID accountId, int cycle) {
-        LocalDateTime cycleAgo = LocalDateTime.now().minusDays(250 + cycle);
-        LocalDateTime now = LocalDateTime.now().minusDays(250);
+        LocalDateTime cycleAgo = LocalDateTime.now().minusDays(280 + cycle);
+        LocalDateTime now = LocalDateTime.now().minusDays(280);
         long daysBetween = ChronoUnit.DAYS.between(cycleAgo, now);
 
         List<Map<String, Object>> dailySettledTransactions = new ArrayList<>();
