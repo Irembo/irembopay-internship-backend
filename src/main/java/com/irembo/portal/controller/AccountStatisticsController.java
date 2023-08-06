@@ -62,7 +62,7 @@ public class AccountStatisticsController {
             @RequestParam(required = false) UUID accountNumber) {
         try {
             if (accountNumber == null) {
-                throw new IllegalArgumentException("Account number is required");
+                throw new IllegalArgumentException("'accountNumber' is required");
             }
             return accountStatisticsService.getTotalValueOfTransactionsLast7Days(accountNumber);
         } catch (IllegalArgumentException e) {

@@ -27,7 +27,7 @@ public class PaymentInvoiceService {
     public Page<PaymentInvoiceStatusProjection> getAllPaymentInvoices(UUID accountNumber, Pageable pageable) {
         try {
             if (accountNumber == null) {
-                throw new IllegalArgumentException("Account number is required");
+                throw new IllegalArgumentException("'accountNumber' is required");
             }
             return paymentInvoiceRepository.findByAppAccountId(accountNumber, pageable);
         } catch (IllegalArgumentException e) {
@@ -42,7 +42,7 @@ public class PaymentInvoiceService {
     public List<PaymentInvoiceStatusProjection> getAllPaymentInvoicesAll(UUID accountNumber) {
         try {
             if (accountNumber == null) {
-                throw new IllegalArgumentException("Account number is required");
+                throw new IllegalArgumentException("'accountNumber' is required");
             }
             return paymentInvoiceRepository.findByAppAccountIdAll(accountNumber);
         } catch (IllegalArgumentException e) {
@@ -57,7 +57,7 @@ public class PaymentInvoiceService {
     public PaymentInvoiceStatusExtraProjection getPaymentInvoiceById(UUID id) {
         try {
             if (id == null) {
-                throw new IllegalArgumentException("Account number is required");
+                throw new IllegalArgumentException("'id' is required");
             }
             return paymentInvoiceRepository.getPaymentInvoiceDetailsWithStatus(id);
         } catch (IllegalArgumentException e) {
@@ -75,7 +75,7 @@ public class PaymentInvoiceService {
 
         try {
             if (accountNumber == null || (status == null && invoiceNumber == null)) {
-                throw new IllegalArgumentException("Account number, invoice number and status are required");
+                throw new IllegalArgumentException("'accountNumber', 'invoiceNumber' and 'status' are required");
             }
             // Perform the search based on invoice number and status
             return paymentInvoiceRepository

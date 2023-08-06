@@ -40,7 +40,7 @@ public class AccountStatisticsService {
     public List<BalanceProjection> getAccountBalance(UUID accountId) {
         try {
             if (accountId == null) {
-                throw new IllegalArgumentException("accountId cannot be null");
+                throw new IllegalArgumentException("'accountId' cannot be null");
             }
 
             List<BalanceProjection> settledInvoices = settlementTransactionRepository
@@ -58,7 +58,7 @@ public class AccountStatisticsService {
             Pageable pageable) {
         try {
             if (accountId == null || accountNumber == null) {
-                throw new IllegalArgumentException("accountId or accountNumber cannot be null");
+                throw new IllegalArgumentException("'accountId' or 'accountNumber' cannot be null");
             }
 
             return paymentAccountRepository.getBalanceForPaymentAccount(accountId, accountNumber, pageable);
@@ -72,7 +72,7 @@ public class AccountStatisticsService {
     public List<Map<String, Object>> getProjectedBalanceAfter7Days(UUID accountId) {
         try {
             if (accountId == null) {
-                throw new IllegalArgumentException("accountId cannot be null");
+                throw new IllegalArgumentException("'accountId' cannot be null");
             }
             List<BalanceProjection> currentBalance = getAccountBalance(accountId);
 
@@ -133,7 +133,7 @@ public class AccountStatisticsService {
     public long getTotalPaidInvoicesLast7Days(UUID accountId) {
         try {
             if (accountId == null) {
-                throw new IllegalArgumentException("accountId cannot be null");
+                throw new IllegalArgumentException("'accountId' cannot be null");
             }
             LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(365 + 7);
 
@@ -152,7 +152,7 @@ public class AccountStatisticsService {
     public List<CountProjection> getTotalPaidInvoicesLast7DaysForPaymentAccount(UUID accountId, UUID accountNumber) {
         try {
             if (accountId == null || accountNumber == null) {
-                throw new IllegalArgumentException("accountId or accountNumber cannot be null");
+                throw new IllegalArgumentException("'accountId' or 'accountNumber' cannot be null");
             }
             LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(365 + 30);
 
@@ -171,7 +171,7 @@ public class AccountStatisticsService {
     public List<CountProjection> getTotalValueOfTransactionsLast7Days(UUID accountNumber) {
         try {
             if (accountNumber == null) {
-                throw new IllegalArgumentException("accountNumber cannot be null");
+                throw new IllegalArgumentException("'accountNumber' cannot be null");
             }
             LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(365 + 7);
 
@@ -189,7 +189,7 @@ public class AccountStatisticsService {
     public List<CountProjection> getTotalValueOfTransactionsLast30Days(UUID accountNumber) {
         try {
             if (accountNumber == null) {
-                throw new IllegalArgumentException("accountNumber cannot be null");
+                throw new IllegalArgumentException("'accountNumber' cannot be null");
             }
             LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(365 + 30);
 
@@ -208,7 +208,7 @@ public class AccountStatisticsService {
     public List<Map<String, Object>> getTotalDailyPaidInvoices(UUID accountId, int cycle) {
         try {
             if (accountId == null) {
-                throw new IllegalArgumentException("accountId cannot be null");
+                throw new IllegalArgumentException("'accountId' cannot be null");
             }
             LocalDateTime cycleAgo = LocalDateTime.now().minusDays(350 + cycle);
             LocalDateTime now = LocalDateTime.now().minusDays(350);
@@ -246,7 +246,7 @@ public class AccountStatisticsService {
     public List<PaymentStatusProjection> getTotalInvoicesByStatus(UUID accountId) {
         try {
             if (accountId == null) {
-                throw new IllegalArgumentException("accountId cannot be null");
+                throw new IllegalArgumentException("'accountId' cannot be null");
             }
             return paymentInvoiceRepository.countByAppAccountIdAndPaymentStatus(accountId);
         } catch (IllegalArgumentException e) {
@@ -262,7 +262,7 @@ public class AccountStatisticsService {
     public List<Map<String, Object>> getTotalDailySettledTransactions(UUID accountId, int cycle) {
         try {
             if (accountId == null) {
-                throw new IllegalArgumentException("accountId cannot be null");
+                throw new IllegalArgumentException("'accountId' cannot be null");
             }
             LocalDateTime cycleAgo = LocalDateTime.now().minusDays(280 + cycle);
             LocalDateTime now = LocalDateTime.now().minusDays(280);

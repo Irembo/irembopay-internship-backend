@@ -35,7 +35,7 @@ public class SettlementTransactionController {
             @RequestParam(required = false) UUID destinationAccountId, Pageable pageable) {
         try {
             if (destinationAccountId == null) {
-                throw new IllegalArgumentException("Account number is required");
+                throw new IllegalArgumentException("'destinationAccountId' is required");
             }
             return settlementTransactionService.getAllSettlementTransactionsForDestinationAccountId(
                     destinationAccountId,

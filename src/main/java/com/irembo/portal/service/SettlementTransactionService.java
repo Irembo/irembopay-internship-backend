@@ -24,7 +24,7 @@ public class SettlementTransactionService {
     public Page<SettlementTransactionProjection> getAllSettlementTrasncation(UUID accountNumber, Pageable pageable) {
         try {
             if (accountNumber == null) {
-                throw new IllegalArgumentException("Account number is required");
+                throw new IllegalArgumentException("'accountNumber' is required");
             }
             return settlementTransactionRepository.findByAppAccountId(accountNumber, pageable);
         } catch (IllegalArgumentException e) {
@@ -39,7 +39,7 @@ public class SettlementTransactionService {
     public Optional<SettlementTransaction> getPaymentInvoiceById(UUID id) {
         try {
             if (id == null) {
-                throw new IllegalArgumentException("Account number is required");
+                throw new IllegalArgumentException("'id' is required");
             }
             return settlementTransactionRepository.findById(id);
         } catch (IllegalArgumentException e) {
@@ -54,7 +54,7 @@ public class SettlementTransactionService {
             UUID destinationAccountId, Pageable pageable) {
         try {
             if (destinationAccountId == null) {
-                throw new IllegalArgumentException("Account number is required");
+                throw new IllegalArgumentException("'destinationAccountId' is required");
             }
             return settlementTransactionRepository.findAllProjectedByDestinationAccountId(destinationAccountId,
                     pageable);

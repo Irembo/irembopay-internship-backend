@@ -23,7 +23,7 @@ public class PaymentAccountService {
     public Page<PaymentAccountProjection> getPaymentAccountsByAccountId(UUID accountNumber, Pageable pageable) {
         try {
             if (accountNumber == null) {
-                throw new IllegalArgumentException("Account number is required");
+                throw new IllegalArgumentException("'accountNumber' is required");
             }
             return paymentAccountRepository.findByAppAccountIdAndPublishedIsTrue(accountNumber, pageable);
         } catch (IllegalArgumentException e) {
