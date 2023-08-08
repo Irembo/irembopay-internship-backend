@@ -17,12 +17,12 @@ import org.springframework.data.domain.Pageable;
 public interface PaymentAccountRepository extends JpaRepository<PaymentAccount, UUID> {
     Page<PaymentAccountProjection> findByAppAccountId(UUID appAccountId, Pageable pageable);
 
-    @Query(value = "SELECT * FROM payment_account WHERE app_account_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM payment_account WHERE app_account_id = ?1 ORDER BY createdAt DESC", nativeQuery = true)
     List<PaymentAccount> findByAppIdCustomQuery(UUID appAccountId);
 
-    @Query("SELECT pa FROM PaymentAccount pa WHERE pa.appAccountId = :accountNumber AND pa.published = true AND status = 'ACTIVE'")
+    @Query("SELECT pa FROM PaymentAccount pa WHERE pa.appAccountId = :accountNumber AND pa.published = true AND status = 'ACTIVE' ORDER BY createdAt DESC")
     Page<PaymentAccountProjection> findByAppAccountIdAndPublishedIsTrue(UUID accountNumber, Pageable pageable);
 
-    @Query("SELECT pa FROM PaymentAccount pa WHERE pa.appAccountId = :accountId AND pa.id = :accountNumber")
+    @Query("SELECT pa FROM PaymentAccount pa WHERE pa.appAccountId = :accountId AND pa.id = :accountNumber ORDER BY createdAt DESC")
     Page<PaymentAccountBalance> getBalanceForPaymentAccount(UUID accountId, UUID accountNumber, Pageable pageable);
 }

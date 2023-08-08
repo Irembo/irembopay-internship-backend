@@ -54,7 +54,7 @@ public interface PaymentInvoiceRepository extends JpaRepository<PaymentInvoice, 
                         "pi.payoutAmount AS invoicePayout " +
                         "FROM PaymentInvoice pi " +
                         "LEFT JOIN pi.settlementTransactionId st " +
-                        "WHERE pi.appAccountId = :accountNumber AND pi.paymentStatus != 'NEW'")
+                        "WHERE pi.appAccountId = :accountNumber AND pi.paymentStatus != 'NEW' ORDER BY createdAt DESC")
         Page<PaymentInvoiceStatusProjection> findByAppAccountId(UUID accountNumber, Pageable pageable);
 
         @Query("SELECT " +
